@@ -1,7 +1,7 @@
 {
   "name": "vault",
   "description": "A Node.js API service that fetches files and checks for virus or malware.",
-  "version": "0.1",
+  "version": "0.0.1",
   "meanjs-version": "0.5.0-beta",
   "private": false,
   "author": "https://github.com/lirantal/vault/graphs/contributors",
