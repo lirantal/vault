@@ -1,7 +1,7 @@
 {
-  "name": "meanjs",
-  "description": "Fullstack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
-  "homepage": "http://meanjs.org/",
+  "name": "vault",
+  "description": "A Node.js API service that fetches files and checks for virus or malware.",
+  "homepage": "https://github.com/lirantal/vault",
   "license": "MIT",
   "dependencies": {
     "angular": "~1.5.0",
