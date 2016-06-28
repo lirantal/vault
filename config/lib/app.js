@@ -7,7 +7,8 @@ var config = require('../config'),
   mongoose = require('./mongoose'),
   express = require('./express'),
   chalk = require('chalk'),
-  seed = require('./seed');
+  seed = require('./seed'),
+  vault = require('./vault');
 
 function seedDB() {
   if (config.seedDB && config.seedDB.seed) {
@@ -52,6 +53,22 @@ module.exports.start = function start(callback) {
       if (config.meanjs['meanjs-version'])
         console.log(chalk.green('MEAN.JS version: ' + config.meanjs['meanjs-version']));
       console.log('--');
+
+
+      var url = 'http://www1.theladbible.com/images/content/56714fafddeb2.JPG';
+      var api = 'http://api.server.com/fileScan';
+      var fileId = 'asdkajh978123da';
+
+      var vaultData = {
+        // The URL to download a file from
+        url: url,
+        // An API end-point to ping when the file has been scanned, or if there was an error
+        api: api,
+        // Assign a local file id
+        id: fileId
+      };
+
+      vault(vaultData);
 
       if (callback) callback(app, db, config);
     });
