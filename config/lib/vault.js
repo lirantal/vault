@@ -66,7 +66,7 @@ function download(vault) {
     .on('error', function(err) {
       debug('downloader: request error for file %s', vault.url);
       debug(err);
-      vault.local.status = 'err';
+      vault.local.downloadStatus = 'err';
       vault.local.msg = err;
       deferred.reject(vault);
     })
@@ -75,7 +75,7 @@ function download(vault) {
   file.on('error', function(err) {
     debug('downloader: unable to process file: %s', vault.url);
     debug(err);
-    vault.local.status = 'err';
+    vault.local.downloadStatus = 'err';
     vault.local.msg = err;
     deferred.reject(vault);
   });
@@ -83,7 +83,7 @@ function download(vault) {
   file.on('finish', function() {
     file.close(function() {
       debug('downloader: successfully downloaded file: %s', vault.url);
-      vault.local.status = 'ok';
+      vault.local.downloadStatus = 'ok';
       deferred.resolve(vault);
     });
   });
@@ -106,11 +106,13 @@ function scanFile(vault) {
   clamavScanner.scan(vault.local.tmpFile, function(err, object, malicious) {
     if (err) {
       console.log('scanner error');
+      console.log(err);
       vault.local.status = 'err';
       vault.local.msg = err;
       deferred.reject(vault);
     } else if (malicious) {
       console.log('scanner alert');
+      console.log(malicious);
       vault.local.status = 'alert';
       vault.local.msg = malicious;
       deferred.resolve(vault);
