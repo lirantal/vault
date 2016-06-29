@@ -7,27 +7,18 @@ var Q = require('q');
 
 var clamavScanner = clamav.createScanner(3310, '127.0.0.1');
 
-// var url = 'http://www1.theladbible.com/images/content/56714fafddeb2.JPG';
-// var api = 'http://api.server.com/fileScan';
-// var fileId = 'asdkajh978123da';
-
-// var vault = {
-//   // The URL to download a file from
-//   url: url,
-//   // An API end-point to ping when the file has been scanned, or if there was an error
-//   api: api,
-//   // Assign a local file id
-//   id: fileId
-// };
-
-
-function vaultRun(vault) {
+/**
+ * process data payload for scanning
+ * @param  {object} vaultData
+ * @return {object} an updated vaultData object with scanning information and result/status details
+ */
+function vaultRun(vaultData) {
 
   var runSuccess = false;
 
-  download(vault)
-    .then(function(data) {
-      scanFile(data);
+  download(vaultData)
+    .then(function(vaultData) {
+      scanFile(vaultData);
       runSuccess = true;
     })
     .catch(function(err) {
@@ -36,26 +27,6 @@ function vaultRun(vault) {
 
   return runSuccess;
 }
-
-/**
- * given a url, create a request-compatible object (request - the npm library)
- * @param  {string} url url of a file to download
- * @return {object}     returns a promise object
- */
-function composeRequestObject(url) {
-
-  var obj = {};
-
-  obj.method = 'GET';
-  obj.uri = url;
-  obj.headers = {
-    'User-Agent': 'anti-virus-scan'
-  };
-
-  return obj;
-
-}
-
 
 /**
  * download file
@@ -139,5 +110,22 @@ function scanFile(vault) {
   return deferred.promise;
 }
 
+/**
+ * given a url, create a request-compatible object (request - the npm library)
+ * @param  {string} url url of a file to download
+ * @return {object}     returns a promise object
+ */
+function composeRequestObject(url) {
+
+  var obj = {};
+
+  obj.method = 'GET';
+  obj.uri = url;
+  obj.headers = {
+    'User-Agent': 'anti-virus-scan'
+  };
+
+  return obj;
+}
 
 module.exports = vaultRun;
