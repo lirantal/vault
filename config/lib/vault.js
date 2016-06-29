@@ -26,8 +26,10 @@ function vaultRun(vaultData) {
 
   download(vaultData)
     .then(function(vaultData) {
-      scanFile(vaultData);
-      runSuccess = true;
+      return scanFile(vaultData);
+    })
+    .then(function(vaultData) {
+      return removeFile(vaultData);
     })
     .catch(function(err) {
       console.log(err);
@@ -135,9 +137,12 @@ function scanFile(vault) {
  * @param  {string} file given a filename or path the file will be removed
  * @return {boolean}      true/false on success/failure
  */
-function removeFile(file) {
+function removeFile(vaultData) {
 
   var deferred = Q.defer();
+  var file = vaultData.local.tmpFile;
+
+  debug('removeFile: attempting to remove file: %s', file);
 
   if (!file) {
     deferred.reject(new Error('no file path was passed'));
