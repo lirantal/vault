@@ -20,7 +20,7 @@ var clamavScanner = clamav.createScanner(3310, '127.0.0.1');
  * @param  {object} vaultData
  * @return {object} an updated vaultData object with scanning information and result/status details
  */
-function vaultRun(vaultData) {
+function vaultRun(vaultData, callback) {
 
   var runSuccess = false;
 
@@ -35,7 +35,7 @@ function vaultRun(vaultData) {
       console.log(err);
     });
 
-  return runSuccess;
+  return callback();
 }
 
 /**
@@ -115,15 +115,13 @@ function scanFile(vault) {
       vault.local.msg = err;
       deferred.reject(vault);
     } else if (malicious) {
-      debug('scanner: ');
+      debug('scanner: found malicious file');
       debug(malicious);
-      console.log('scanner alert');
-      console.log(malicious);
       vault.local.status = 'alert';
       vault.local.msg = malicious;
       deferred.resolve(vault);
     } else {
-      console.log('scanner safe');
+      debug('scanner: safe file');
       vault.local.status = 'ok';
       deferred.resolve(vault);
     }
