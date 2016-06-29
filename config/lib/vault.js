@@ -11,7 +11,7 @@ var debug = require('debug')('vault');
  * vault configuration parameter for a writable temporary directory
  * @type {String}
  */
-var tmpDirectory = "c:\Temp";
+var tmpDirectory = '/tmp/';
 
 var clamavScanner = clamav.createScanner(3310, '127.0.0.1');
 
