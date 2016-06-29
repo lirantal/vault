@@ -46,13 +46,15 @@ function download(vault) {
 
   vault.local = {};
 
+  debug('downloader: initialized');
+
   // @TODO check if the path exists and if it is accessible
   // @TODO make this path for local download configurable
   // @TODO save the downloaded file using a generated random hash
   var localFile = tmpDirectory + getRandomString();
   debug('downloader: temporary directory set to: %s', tmpDirectory);
   if (isPathWritable(tmpDirectory) !== true) {
-    deferred.reject(new Error('"unable to write to directory'));
+    deferred.reject(new Error('unable to write to directory'));
   }
 
   var file = fs.createWriteStream(localFile);
@@ -100,17 +102,19 @@ function scanFile(vault) {
 
   var deferred = Q.defer();
 
-  console.log('-> scanFile');
-  console.log(vault);
+  debug('scanner: initialized');
 
   clamavScanner.scan(vault.local.tmpFile, function(err, object, malicious) {
+    debug('scanner: scanning file: %s', vault.local.tmpFile);
     if (err) {
-      console.log('scanner error');
-      console.log(err);
+      debug('scanner: error scanning file');
+      debug(err);
       vault.local.status = 'err';
       vault.local.msg = err;
       deferred.reject(vault);
     } else if (malicious) {
+      debug('scanner: ');
+      debug(malicious);
       console.log('scanner alert');
       console.log(malicious);
       vault.local.status = 'alert';
@@ -126,6 +130,28 @@ function scanFile(vault) {
   return deferred.promise;
 }
 
+/**
+ * remove a file
+ * @param  {string} file given a filename or path the file will be removed
+ * @return {boolean}      true/false on success/failure
+ */
+function removeFile(file) {
+
+  var deferred = Q.defer();
+
+  if (!file) {
+    deferred.reject(new Error('no file path was passed'));
+  }
+
+  fs.unlink(file, function(err) {
+    if (err) {
+      deferred.reject(new Error('problem deleting file'));
+    }
+    deferred.resolve();
+  });
+
+  return deferred.promise;
+}
 
 /**
  * checks if a given path is writable
