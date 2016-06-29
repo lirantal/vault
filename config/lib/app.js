@@ -7,15 +7,7 @@ var config = require('../config'),
   mongoose = require('./mongoose'),
   express = require('./express'),
   chalk = require('chalk'),
-  seed = require('./seed'),
-  debug = require('debug')('vault'),
-  vault = require('./vault');
-
-/**
- * vault scan interval, will be scanning for a file every interval
- * @type {Number}
- */
-var scanInterval = 10000;
+  seed = require('./seed');
 
 function seedDB() {
   if (config.seedDB && config.seedDB.seed) {
@@ -60,43 +52,6 @@ module.exports.start = function start(callback) {
       if (config.meanjs['meanjs-version'])
         console.log(chalk.green('MEAN.JS version: ' + config.meanjs['meanjs-version']));
       console.log('--');
-
-
-      // var url = 'http://www1.theladbible.com/images/content/56714fafddeb2.JPG';
-      // var api = 'http://api.server.com/fileScan';
-      // var fileId = 'asdkajh978123da';
-      //
-      // var vaultData = {
-      //   // The URL to download a file from
-      //   url: url,
-      //   // An API end-point to ping when the file has been scanned, or if there was an error
-      //   api: api,
-      //   // Assign a local file id
-      //   id: fileId
-      // };
-      //
-      // vault(vaultData);
-
-      var vaultData = {
-        // The URL to download a file from
-        url: 'http://www1.theladbible.com/images/content/56714fafddeb2.JPG',
-        // An API end-point to ping when the file has been scanned, or if there was an error
-        api: 'http://api.server.com/fileScan',
-        // Assign a local file id
-        id: 'asdkajh978123da'
-      };
-
-
-      function maintainVault() {
-        setTimeout(function() {
-          debug('vault: processing vaultData - %s', new Date().toJSON());
-          vault(vaultData, function() {
-            maintainVault();
-          });
-        }, scanInterval);
-      }
-
-      maintainVault();
 
       if (callback) callback(app, db, config);
     });
