@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Module dependencies.
+ */
 var fs = require('fs');
 var crypto = require('crypto');
 var clamav = require('clamav.js');

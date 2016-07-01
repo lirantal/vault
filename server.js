@@ -1,7 +1,10 @@
 'use strict';
 
+/**
+ * Module dependencies.
+ */
+var app = require('./config/lib/app');
 var path = require('path');
-
 var debug = require('debug')('vault');
 var vault = require(path.resolve('./config/lib/vault'));
 
@@ -11,10 +14,7 @@ var vault = require(path.resolve('./config/lib/vault'));
  */
 var scanInterval = 10000;
 
-/**
- * Module dependencies.
- */
-var app = require('./config/lib/app');
+
 var server = app.start(function(app, db, config) {
 
   var vaultData = {
@@ -29,11 +29,23 @@ var server = app.start(function(app, db, config) {
   function maintainVault() {
     setTimeout(function() {
       debug('vault: processing vaultData - %s', new Date().toJSON());
-      vault(vaultData, function() {
+      vault(vaultData, function(err, data) {
+        // @TODO on error we want to return the file we took for scanning to
+        // the files-to-scan queue so we can take it again later
+        // if (err) {
+        //
+        // }
+        // @TODO
+        // if the scanning completed, we will update the files queue with These
+        // details and ping back the API with the result
+
+        // finally, when the vault scanning flow is completed, we re-schedule
+        // this process again in the loop
         maintainVault();
       });
     }, scanInterval);
   }
 
+  // initialize the forever-loop
   maintainVault();
 });
