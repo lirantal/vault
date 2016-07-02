@@ -1,34 +1,29 @@
 'use strict';
 
-'use strict';
-
 /**
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+  path = require('path'),
   Vault = mongoose.model('Vault'),
+  logger = require(path.resolve('./config/lib/logger')),
   _ = require('lodash');
 
-
-exports.saveVaultDate = function(){
-  logger.debug('Enter ' + req.url);
+exports.saveVaultDate = function(req, res, next) {
 
   var vaultEntry = new Vault(req.body);
 
-  vaultEntry.save(function(err){
-    if(err){
-
+  vaultEntry.save(function(err) {
+    if (err) {
+      logger.error(err);
     } else {
-      res.statusCode =201;
-      res.body = { message : 'Vault data was created successfully'};
-      return next();
+      return res.status(201).send({ message: 'Vault data was created successfully' });
     }
   });
 
 };
 
 exports.getScanData = function(req, res, next) {
-
 //  var cpId =  req.param('cpId'),
 //      errMsg = '';;
 //

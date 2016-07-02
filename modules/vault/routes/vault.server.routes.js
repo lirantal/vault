@@ -1,13 +1,14 @@
 'use strict';
 
 /**
+ * Module dependencies.
+ */
+var vault = require('../controller/vault.server.controller');
+
+/**
  * Vault routes
  * @param app
  */
 module.exports = function(app) {
-  var vault = require('../../vault/controller');
-
-  app.route('/vault').post(vault.saveVaultDate);
-
-
+  app.route('/api/vaultQueue').post(vault.saveVaultDate);
 };
