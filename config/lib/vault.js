@@ -35,10 +35,11 @@ function vaultRun(vaultData, callback) {
       return removeFile(vaultData);
     })
     .catch(function(err) {
-      console.log(err);
+      debug('vaultRun: error completing flow: ' + err.message);
+      return callback(err, null);
     });
 
-  return callback();
+  return callback(null, vaultData);
 }
 
 /**

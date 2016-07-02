@@ -14,7 +14,6 @@ var vault = require(path.resolve('./config/lib/vault'));
  */
 var scanInterval = 10000;
 
-
 var server = app.start(function(app, db, config) {
 
   var vaultData = {
@@ -28,7 +27,7 @@ var server = app.start(function(app, db, config) {
 
   function maintainVault() {
     setTimeout(function() {
-      debug('vault: processing vaultData - %s', new Date().toJSON());
+      debug('vault: %s - processing data', new Date().toJSON());
       vault(vaultData, function(err, data) {
         // @TODO on error we want to return the file we took for scanning to
         // the files-to-scan queue so we can take it again later
