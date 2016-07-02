@@ -36,8 +36,15 @@ var VaultSchema = new Schema({
     type: Boolean,
     trim: true,
     default: false
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  updated: {
+    type: Date,
+    default: Date.now
   }
-
 });
 
 mongoose.model('Vault', VaultSchema);
