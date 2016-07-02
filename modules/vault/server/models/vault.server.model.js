@@ -27,12 +27,6 @@ var VaultSchema = new Schema({
     default: '',
     trim: true
   },
-  cpId: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'CP id cannot be blank'
-  },
   status: {
     type: String,
     default: '',

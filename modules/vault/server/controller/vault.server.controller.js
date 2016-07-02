@@ -7,17 +7,25 @@ var mongoose = require('mongoose'),
   path = require('path'),
   Vault = mongoose.model('Vault'),
   logger = require(path.resolve('./config/lib/logger')),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
 exports.saveVaultDate = function(req, res, next) {
 
-  var vaultEntry = new Vault(req.body);
+  var vaultEntry = new Vault({
+    url: req.body.url,
+    api: req.body.api,
+    id: req.body.id
+  });
 
   vaultEntry.save(function(err) {
     if (err) {
       logger.error(err);
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     } else {
-      return res.status(201).send({ message: 'Vault data was created successfully' });
+      return res.status(201).send(vaultEntry);
     }
   });
 
