@@ -28,18 +28,20 @@ function vaultRun(vaultData, callback) {
   var runSuccess = false;
 
   download(vaultData)
-    .then(function(vaultData) {
-      return scanFile(vaultData);
+    .then(function(data) {
+      return scanFile(data);
     })
-    .then(function(vaultData) {
-      return removeFile(vaultData);
+    .then(function(data) {
+      return removeFile(data);
+    })
+    .then(function(data) {
+      return callback(null, data);
     })
     .catch(function(err) {
-      debug('vaultRun: error completing flow: ' + err.message);
-      return callback(err, null);
+      debug('vault: error completing flow: ' + err.message);
+      return callback(err, vaultData);
     });
 
-  return callback(null, vaultData);
 }
 
 /**
@@ -68,6 +70,7 @@ function download(vault) {
   var requestUrl = getRequestObject(vault.url);
 
   vault.local.tmpFile = localFile;
+  vault.localFile = localFile;
 
   debug('downloader: starting to download: %s', vault.url);
   request.get(requestUrl)
@@ -76,7 +79,7 @@ function download(vault) {
       debug(err);
       vault.local.downloadStatus = 'err';
       vault.local.msg = err;
-      deferred.reject(vault);
+      deferred.reject(err);
     })
     .pipe(file);
 
@@ -85,13 +88,14 @@ function download(vault) {
     debug(err);
     vault.local.downloadStatus = 'err';
     vault.local.msg = err;
-    deferred.reject(vault);
+    deferred.reject(err);
   });
 
   file.on('finish', function() {
     file.close(function() {
       debug('downloader: successfully downloaded file: %s', vault.url);
       vault.local.downloadStatus = 'ok';
+      vault.test = '';
       deferred.resolve(vault);
     });
   });
@@ -110,6 +114,9 @@ function scanFile(vault) {
 
   debug('scanner: initialized');
 
+  // initialize empty msg variable
+  vault.local.msg = '';
+
   clamavScanner.scan(vault.local.tmpFile, function(err, object, malicious) {
     debug('scanner: scanning file: %s', vault.local.tmpFile);
     if (err) {
@@ -117,7 +124,7 @@ function scanFile(vault) {
       debug(err);
       vault.local.status = 'err';
       vault.local.msg = err;
-      deferred.reject(vault);
+      deferred.reject(err);
     } else if (malicious) {
       debug('scanner: found malicious file');
       debug(malicious);
@@ -154,7 +161,7 @@ function removeFile(vaultData) {
     if (err) {
       deferred.reject(new Error('problem deleting file'));
     }
-    deferred.resolve();
+    deferred.resolve(vaultData);
   });
 
   return deferred.promise;
