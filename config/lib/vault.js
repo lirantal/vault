@@ -63,6 +63,7 @@ function download(vault) {
   debug('downloader: temporary directory set to: %s', tmpDirectory);
   if (isPathWritable(tmpDirectory) !== true) {
     deferred.reject(new Error('unable to write to directory'));
+    return deferred.promise;
   }
 
   var file = fs.createWriteStream(localFile);
@@ -73,22 +74,24 @@ function download(vault) {
   vault.localFile = localFile;
 
   debug('downloader: starting to download: %s', vault.url);
-  request.get(requestUrl)
-    .on('error', function(err) {
-      debug('downloader: request error for file %s', vault.url);
-      debug(err);
-      vault.local.downloadStatus = 'err';
-      vault.local.msg = err;
-      deferred.reject(err);
-    })
-    .pipe(file);
 
-  file.on('error', function(err) {
-    debug('downloader: unable to process file: %s', vault.url);
-    debug(err);
+  try {
+    request.get(requestUrl)
+    .pipe(file);
+  } catch (err) {
+    debug('downloader: request error for file %s', vault.url);
     vault.local.downloadStatus = 'err';
     vault.local.msg = err;
     deferred.reject(err);
+    return deferred.promise;
+  }
+
+  file.on('error', function(err) {
+    debug('downloader: unable to process file: %s', vault.url);
+    vault.local.downloadStatus = 'err';
+    vault.local.msg = err;
+    deferred.reject(err);
+    return deferred.promise;
   });
 
   file.on('finish', function() {
@@ -121,13 +124,12 @@ function scanFile(vault) {
     debug('scanner: scanning file: %s', vault.local.tmpFile);
     if (err) {
       debug('scanner: error scanning file');
-      debug(err);
       vault.local.status = 'err';
       vault.local.msg = err;
       deferred.reject(err);
+      return deferred.promise;
     } else if (malicious) {
       debug('scanner: found malicious file');
-      debug(malicious);
       vault.local.status = 'alert';
       vault.local.msg = malicious;
       deferred.resolve(vault);
@@ -155,6 +157,7 @@ function removeFile(vaultData) {
 
   if (!file) {
     deferred.reject(new Error('no file path was passed'));
+    return deferred.promise;
   }
 
   fs.unlink(file, function(err) {
