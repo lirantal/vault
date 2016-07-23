@@ -5,6 +5,7 @@ web:
   command: npm start
   links:
    - db
+   - clamav
   ports:
    - "3000:3000"
    - "5858:5858"
@@ -16,6 +17,8 @@ web:
    - /opt/mean.js/node_modules
    - /opt/mean.js/public
    - /opt/mean.js/uploads
+  volumes_from:
+   - volume
 db:
   image: mongo:3.2
   container_name: db_1
@@ -24,3 +27,16 @@ db:
    - "27017:27017"
   volumes:
    - db:/data/db
+clamav:
+  image: dinkel/clamavd
+  container_name: clamav
+  restart: always
+  ports:
+   - "3310:3310"
+  volumes_from:
+   - volume
+volume:
+  image: dinkel/clamavd
+  entrypoint: /bin/bash
+  volumes:
+   - /malware
