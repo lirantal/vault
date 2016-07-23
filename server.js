@@ -5,6 +5,7 @@
  */
 var app = require('./config/lib/app');
 var path = require('path');
+var config = require(path.resolve('./config/config'));
 var debug = require('debug')('vault');
 var vault = require(path.resolve('./config/lib/vault'));
 var request = require('request');
@@ -20,7 +21,7 @@ var mongoose = require('mongoose'),
  * vault scan interval, will be scanning for a file every interval
  * @type {Number}
  */
-var scanInterval = 10000;
+var scanInterval = config.vault.scanInterval;
 
 var server = app.start(function(app, db, config) {
 

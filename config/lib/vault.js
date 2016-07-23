@@ -5,6 +5,7 @@
  */
 var fs = require('fs');
 var crypto = require('crypto');
+var config = require('../config');
 var clamav = require('clamav.js');
 var request = require('request');
 var Q = require('q');
@@ -14,9 +15,9 @@ var debug = require('debug')('vault');
  * vault configuration parameter for a writable temporary directory
  * @type {String}
  */
-var tmpDirectory = '/tmp/';
+var tmpDirectory = config.vault.incomingDirectory;
 
-var clamavScanner = clamav.createScanner(3310, '127.0.0.1');
+var clamavScanner = clamav.createScanner(config.vault.scanner.port, config.vault.scanner.host);
 
 /**
  * process data payload for scanning
