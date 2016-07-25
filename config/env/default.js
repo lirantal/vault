@@ -53,6 +53,6 @@ module.exports = {
       port: 3310,
       host: '127.0.0.1'
     },
-    incomingDirectory: '/malware'
+    incomingDirectory: '/malware/'
   }
 };
