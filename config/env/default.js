@@ -45,5 +45,14 @@ module.exports = {
         fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
       }
     }
+  },
+  vault: {
+    // interval in seconds to poll for files scanning
+    scanInterval: 1000,
+    scanner: {
+      port: 3310,
+      host: '127.0.0.1'
+    },
+    incomingDirectory: '/malware/'
   }
 };
