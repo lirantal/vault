@@ -50,8 +50,8 @@ module.exports = {
     // interval in seconds to poll for files scanning
     scanInterval: 1000,
     scanner: {
-      port: 3310,
-      host: '127.0.0.1'
+      port: process.env.CLAMAV_PORT_3310_TCP_PORT || 3310,
+      host: process.env.CLAMAV_PORT_3310_TCP_ADDR || '127.0.0.1'
     },
     incomingDirectory: '/malware/'
   }
