@@ -116,7 +116,7 @@ var validateSessionSecret = function (config, testing) {
  */
 var validateVaultConfig = function (config) {
   var dir = config.vault.incomingDirectory;
-  if (dir.charAt(dir.length-1) !== '/') {
+  if (dir.charAt(dir.length - 1) !== '/') {
     config.vault.incomingDirectory += '/';
   }
 };
