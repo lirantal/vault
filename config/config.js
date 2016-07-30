@@ -112,6 +112,16 @@ var validateSessionSecret = function (config, testing) {
 };
 
 /**
+ * Validate configuration for vault
+ */
+var validateVaultConfig = function (config) {
+  var dir = config.vault.incomingDirectory;
+  if (dir.charAt(dir.length - 1) !== '/') {
+    config.vault.incomingDirectory += '/';
+  }
+};
+
+/**
  * Initialize global configuration files
  */
 var initGlobalConfigFolders = function (config, assets) {
@@ -203,6 +213,9 @@ var initGlobalConfig = function () {
 
   // Validate session secret
   validateSessionSecret(config);
+
+  // Validating input for vault
+  validateVaultConfig(config);
 
   // Expose configuration utilities
   config.utils = {
