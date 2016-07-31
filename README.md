@@ -1,7 +1,5 @@
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/lirantal/vault?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/lirantal/vault.svg?branch=master)](https://travis-ci.org/lirantal/vault)
 [![Dependencies Status](https://david-dm.org/lirantal/vault.svg)](https://david-dm.org/lirantal/vault)
-[![Coverage Status](https://coveralls.io/repos/lirantal/vault/badge.svg?branch=master&service=github)](https://coveralls.io/github/lirantal/vault?branch=master)
 
 Vault is a Node.js API service that fetches files and checks for virus or malware.
 It is heavily built on-top of the [MEAN.JS](https://github.com/meanjs/mean.git) framework.
