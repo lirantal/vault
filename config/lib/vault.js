@@ -38,11 +38,10 @@ function vaultRun(vaultData, callback) {
     .then(function(data) {
       return callback(null, data);
     })
-    .catch(function(err) {
-      debug('vault: error completing flow: ' + err.message);
-      return callback(err, vaultData);
+    .catch(function(data) {
+        debug('vault: error completing flow: ' + data.local.msg);
+        return callback(data.local.msg, vaultData);
     });
-
 }
 
 /**
@@ -63,7 +62,9 @@ function download(vault) {
   var localFile = tmpDirectory + getRandomString();
   debug('downloader: temporary directory set to: %s', tmpDirectory);
   if (isPathWritable(tmpDirectory) !== true) {
-    deferred.reject(new Error('unable to write to directory'));
+    vault.local.status = 'err';
+    vault.local.msg = 'unable to write to directory';
+    deferred.reject(vault);
     return deferred.promise;
   }
 
@@ -81,25 +82,24 @@ function download(vault) {
     .pipe(file);
   } catch (err) {
     debug('downloader: request error for file %s', vault.url);
-    vault.local.downloadStatus = 'err';
+    vault.local.status = 'err';
     vault.local.msg = err;
-    deferred.reject(err);
+    deferred.reject(vault);
     return deferred.promise;
   }
 
   file.on('error', function(err) {
     debug('downloader: unable to process file: %s', vault.url);
-    vault.local.downloadStatus = 'err';
+    vault.local.status = 'err';
     vault.local.msg = err;
-    deferred.reject(err);
+    deferred.reject(vault);
     return deferred.promise;
   });
 
   file.on('finish', function() {
     file.close(function() {
       debug('downloader: successfully downloaded file: %s', vault.url);
-      vault.local.downloadStatus = 'ok';
-      vault.test = '';
+      vault.local.status = 'ok';
       deferred.resolve(vault);
     });
   });
@@ -127,8 +127,13 @@ function scanFile(vault) {
       debug('scanner: error scanning file');
       vault.local.status = 'err';
       vault.local.msg = err;
-      deferred.reject(err);
-      return deferred.promise;
+
+      removeFile(vault).then(function(data) {
+          return deferred.reject(vault);
+      }).catch(function(data) {
+        return deferred.reject(vault);
+      });
+
     } else if (malicious) {
       debug('scanner: found malicious file');
       vault.local.status = 'alert';
@@ -157,13 +162,18 @@ function removeFile(vaultData) {
   debug('removeFile: attempting to remove file: %s', file);
 
   if (!file) {
-    deferred.reject(new Error('no file path was passed'));
+    vaultData.local.status = 'err';
+    vaultData.local.msg = 'no file path was provided';
+    deferred.reject(vaultData);
     return deferred.promise;
   }
 
   fs.unlink(file, function(err) {
     if (err) {
-      deferred.reject(new Error('problem deleting file'));
+      vaultData.local.status = 'err';
+      vaultData.local.msg = 'error deleting file';
+      deferred.reject(vaultData);
+      return deferred.promise;
     }
     deferred.resolve(vaultData);
   });
