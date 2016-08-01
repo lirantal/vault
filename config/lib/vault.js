@@ -39,8 +39,8 @@ function vaultRun(vaultData, callback) {
       return callback(null, data);
     })
     .catch(function(data) {
-        debug('vault: error completing flow: ' + data.local.msg);
-        return callback(data.local.msg, vaultData);
+      debug('vault: error completing flow: ' + data.local.msg);
+      return callback(data.local.msg, vaultData);
     });
 }
 
@@ -129,7 +129,7 @@ function scanFile(vault) {
       vault.local.msg = err;
 
       removeFile(vault).then(function(data) {
-          return deferred.reject(vault);
+        return deferred.reject(vault);
       }).catch(function(data) {
         return deferred.reject(vault);
       });
