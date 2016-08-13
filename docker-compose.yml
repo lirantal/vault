@@ -1,8 +1,8 @@
 web:
   restart: always
   build: .
-  container_name: meanjs
-  command: npm start
+  container_name: vault
+  command: bash -c "DEBUG=vault* npm start"
   links:
    - db
    - clamav
