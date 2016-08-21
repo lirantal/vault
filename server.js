@@ -57,32 +57,35 @@ var server = app.start(function(app, db, config) {
           // the files-to-scan queue so we can take it again later
           if (err) {
             debug('vault: error processing document: %s with error %s: ', document._id, err);
-            Vault.findOneAndUpdate({ scanStatus: false }, { _id: document._id });
+            Vault.findOneAndUpdate({ _id: document._id }, { scanStatus: false });
             return maintainVault();
           } else {
             // if the scanning completed, we will update the files queue with These
             // details and ping back the API with the result
-            request({
-              method: 'POST',
-              uri: document.api,
-              json: {
-                url: document.url,
-                api: document.api,
-                status: vaultData.local.status,
-                msg: vaultData.local.msg
-              }
-            },
+
+            Vault.findOneAndUpdate({ _id: document._id }, { $set: { status: vaultData.local.status, msg: vaultData.local.msg } }, null, function(err, doc) {
+              request({
+                method: 'POST',
+                uri: document.api,
+                json: {
+                  url: document.url,
+                  api: document.api,
+                  status: vaultData.local.status,
+                  msg: vaultData.local.msg
+                }
+              },
               function(err, httpIncoming, response) {
                 if (err) {
                   // on error, we log it and get back to the wait on fetching another item from the queue
                   debug('vault: unable to ping back server api for %s: %s', document._id, err.message);
-                  Vault.findOneAndUpdate({ scanStatus: false }, { _id: document._id });
+                  Vault.findOneAndUpdate({ _id: document._id }, { scanStatus: false });
                   return maintainVault();
                 } else {
                   debug('vault: successfully pinged api server %s and processed %s', document.api, document._id);
                   return maintainVault();
                 }
               });
+            });
           }
         });
 
