@@ -32,6 +32,11 @@ var VaultSchema = new Schema({
     default: '',
     trim: true
   },
+  msg: {
+    type: String,
+    default: '',
+    trim: true
+  },
   scanStatus: {
     type: Boolean,
     trim: true,
