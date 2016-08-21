@@ -40,7 +40,7 @@ function vaultRun(vaultData, callback) {
     })
     .catch(function(data) {
       debug('vault: error completing flow: ' + data.local.msg);
-      return callback(data.local.msg, vaultData);
+      return callback(data.local.msg, data);
     });
 }
 
