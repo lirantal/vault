@@ -3,6 +3,10 @@
 
 Vault is a Node.js API service that fetches files and checks for virus or malware, then pings back to a remote API with the scanned status.
 
+High level flow diagram of how vault works:
+![image](https://cloud.githubusercontent.com/assets/316371/17279958/f6f006d8-578b-11e6-8a4d-279d96206169.png)
+
+
 ## Prerequisites
 The following are required to run vault.js:
 * Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
