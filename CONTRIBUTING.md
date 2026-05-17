@@ -1,85 +1,74 @@
-# How to contribute
+# Contributing
 
-Support and contributions from the open source community are essential for keeping
-MEAN.js up to date and always improving! There are a few guidelines that we need
-contributors to follow to keep the project consistent, as well as allow us to keep
-maintaining MEAN.js in a reasonable amount of time.
+Thanks for taking the time to contribute! Issues, ideas, and PRs are all welcome.
+The notes below are guidelines to help your contribution land smoothly. If in doubt, open the thing anyway and we'll figure it out together.
 
-## Creating an Issue
+## Opening an issue
 
-Before you create a new Issue:
-* Check the [Issues](https://github.com/meanjs/mean/issues) on Github to ensure one doesn't already exist.
-* Clearly describe the issue, including the steps to reproduce the issue.
-* If it's a new feature, enhancement, or restructure, Explain your reasoning on why you think it should be added, as well as a particular use case.
+A good issue gives us enough to reproduce or understand the ask. Useful things to include:
 
-## Making Changes
+- **For bugs:** what you expected, what actually happened, and the shortest repro you can manage. Versions (runtime, OS, package) and stack traces help.
+- **For features:** the problem you're trying to solve, not just the solution you have in mind. A concrete example of how you'd use it is gold.
 
-* Create a topic branch from the master branch.
-* Check for unnecessary whitespace / changes with `git diff --check` before committing.
-	* Also check that your code is formatted properly with spaces (hint: Use [.editorconfig](http://editorconfig.org/))
-* Keep git commit messages clear and appropriate
-	* If possible, please "squash" your commits to as few commits as possible/reasonable such as one commit for implementation, one for tests, and one for documentation before finally squashing to one commit when getting the LGTM from a collaborator.
-  * Follow the commit message guidelines below.
-* Make Sure you have added any tests necessary to test your code.
-	* Run __all__ the tests to ensure nothing else was accidently broken.
-	* Don't rely on the existing tests to see if you've broken code elsewhere; test the changes you made in a browser too!
-* Update the Documentation to go along with any changes in functionality / improvements in a separate pull request against the gh-pages branch.
+A quick search of existing issues helps avoid duplicates, but don't agonize over it.
 
-## Commit Message Guidelines
+## Proposing a PR
+
+PRs are expected to meet a few baseline requirements before review:
+
+- **Tests are required** for any behavior change — new features need new tests, bug fixes need a regression test that fails without the fix.
+- **Existing tests must pass** locally and in CI. Don't disable or skip tests to make a PR green.
+- **Coverage should not regress.** If your change drops coverage meaningfully, add tests or explain why in the PR description.
+- **Linters and type checks must pass.** Run them locally before pushing; CI will reject otherwise.
+- **One logical change per PR.** Refactors, formatting churn, and unrelated fixes belong in separate PRs, it makes review and revert sane.
+- **Describe what and why.** A PR title and a few lines of context go a long way, reviewers shouldn't have to reverse-engineer your intent from the diff.
+- **Link the issue you're closing.** If your PR resolves an open issue, include a `Related issues` section in the description with `Fixes: #<issue-number>` (or `Closes: #<issue-number>`) so GitHub auto-closes it on merge.
+- **Breaking changes need a heads-up** in the PR description, plus a migration note for users.
+
+Large or speculative changes: open an issue first to align on direction before investing time.
+
+## Commit guidelines
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/). The format is:
+
 ```
-Header
-Blank Line
-Body
-Blank Line
-Footer
-
-The header should look like:
-<type>(<scope>): <subject>
-
-The body should have any necessary detailed info about the commit:
-An example, references as to where this idea came from, etc.
-
-The footer should have all the issues tagged:
-Fixes #123, Fixes #456
-
-So a commit should like like:
-feat(users): Add new Yahoo authentication
-
-Yahoo authentication idea proposed by @codydaig
-Example implementation in file.js
-
-Fixes #82
+<type>(<optional scope>): <short summary>
 ```
 
-* Types: 
-  * feat - Features, Enhancements, and overall Improvements
-  * fix - Fixes, Bugs, HotFixs, etc...
-  * doc - Changes to the Documentation and doesn't actually touch any code.
-* Scope:
-  * The scope should be where the change took place.
-  * Examples: users, core, config, articles
-* Subject:
-  * The subject line should be clear and concise as to what is being accomplished in the commit.
-* General Rules:
-  * No Line in the Commit message can be longer than 80 characters.
-* Refrence: [Angular Conventions](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md)
+Common types:
 
+- `feat:` — a new feature
+- `fix:` — a bug fix
+- `docs:` — documentation only
+- `refactor:` — code change that neither fixes a bug nor adds a feature
+- `test:` — adding or fixing tests
+- `chore:` — tooling, build, dependencies
+- `perf:` — performance improvement
 
-## Submitting the Pull Request
+Examples:
 
-* Push your changes to your topic branch on your fork of the repo.
-* Submit a pull request from your topic branch to the master branch on the MEAN.JS repository.
-* Be sure to tag any issues your pull request is taking care of / contributing to.
-	* By adding "Closes #xyz" to a commit message will auto close the issue once the pull request is merged in.
-* Small changes are usually accepted and merged in within a week (provided that 2 collaborators give the okay)
-* Larger changes usually spark further discussion and possible changes prior to being merged in.
+```
+feat: support multiple input files
+fix(parser): handle empty input gracefully
+docs: clarify install instructions
+```
 
-## Documentation (meanjs.org)
+Breaking changes: add `!` after the type (`feat!: ...`) and explain the break in the commit body.
 
-The code for the documentation and the website are located in the meanjs/mean repo on the gh-pages branch. The website is hosted by github pages and generated using jekyll. See the README in the gh-pages branch for more information on how to get your dev enviorment set-up.
+This format drives changelog generation and release automation, so it matters more than the average commit-style guide.
 
-## Generating a new Release
+## Local development
 
-For those who will be generating releases:
-* Don't forget to update the changelog!
-  * `conventional-changelog -r 1 | cat - CHANGELOG.md | tee CHANGELOG.md`
+1. Fork and clone the repository.
+2. Install dependencies using the project's package manager (see `package.json`, or equivalent).
+3. Run the test suite to confirm a clean baseline before making changes.
+4. Run the linter and type checker (if configured) the same way.
+5. Make your change on a feature branch, commit using the format above, and open a PR.
+
+If any of the above doesn't work on a fresh checkout, that's a bug, please open an issue.
+
+## For automated agents
+
+If you are an AI coding agent or automated bot opening a PR, please add 🤖🤖🤖 to the end of the PR title. This helps maintainers triage agent-authored contributions and is a baseline expectation for this repo — PRs without the marker that turn out to be automated may be closed without review.
+
+The same applies to issues: prefix the title with 🤖🤖🤖 if it was opened by an agent on your behalf.
