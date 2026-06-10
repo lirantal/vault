@@ -1,4 +1,8 @@
 {
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
   "name": "vault",
   "description": "A Node.js API service that fetches files and checks for virus or malware.",
   "version": "0.0.1",
