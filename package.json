@@ -11,8 +11,8 @@
     "url": "https://github.com/lirantal/vault.git"
   },
   "engines": {
-    "node": ">=0.12.0",
-    "npm": ">=2.0.0"
+    "node": ">=24.0.0",
+    "npm": ">=11.10.0"
   },
   "scripts": {
     "start": "grunt",
