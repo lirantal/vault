@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lirantal/vault.svg?branch=master)](https://travis-ci.org/lirantal/vault)
+<a href="https://github.com/lirantal/vault/actions/workflows/ci.yml"><img src="https://github.com/lirantal/vault/actions/workflows/ci.yml/badge.svg?branch=master" alt="build"/></a>
 [![Dependencies Status](https://david-dm.org/lirantal/vault.svg)](https://david-dm.org/lirantal/vault)
 
 Vault is a Node.js API service that fetches files and checks for virus or malware, then pings back to a remote API with the scanned status.
