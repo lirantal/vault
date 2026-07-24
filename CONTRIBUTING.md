@@ -29,7 +29,7 @@ Large or speculative changes: open an issue first to align on direction before i
 
 ## Changesets
 
-This package is released with Changesets; see [Release](RELEASE.md) for the release workflow and changeset creation steps. Any PR that changes published package behavior must include a changeset so the release PR can include the right version bump and changelog entry.
+This package is released with Changesets. Any PR that changes published package behavior must include a changeset so the release PR can include the right version bump and changelog entry.
 
 Add a patch changeset for:
 
@@ -44,7 +44,7 @@ A changeset is usually not needed for:
 - CI/tooling-only changes.
 - Documentation-only changes that do not describe a new release-worthy behavior.
 
-Before opening a PR, check whether the change affects the published npm package. If yes, create a patch changeset unless the maintainer explicitly says not to. When in doubt, add a patch changeset and follow the process in [Release](RELEASE.md).
+Before opening a PR, check whether the change affects the published npm package. If yes, create a patch changeset unless the maintainer explicitly says not to. When in doubt, add a patch changeset.
 
 ## Commit guidelines
 
@@ -90,7 +90,6 @@ If any of the above doesn't work on a fresh checkout, that's a bug, please open 
 
 ### Environment setup
 
-Before making changes, use the project's devcontainer when possible so local tools, dependencies, and environment hooks match the expected setup. AI coding agents running from the host should follow the portless SSH workflow in [`.devcontainer/README.md`](.devcontainer/README.md#coding-agents-over-ssh) to start or reuse the devcontainer, configure the SSH alias, and select the mounted repository folder.
 
 ### Release readiness
 
