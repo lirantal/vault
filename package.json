@@ -132,8 +132,8 @@
     "run-sequence": "~2.2.1",
     "should": "~13.2.3",
     "supertest": "~7.2.2",
-    "@changesets/changelog-github": "^0.7.0",
-    "@changesets/cli": "^2.31.0",
+    "@changesets/changelog-github": "^1.0.0",
+    "@changesets/cli": "^3.0.0",
     "markdownlint-cli": "0.49.1"
   },
   "publishConfig": {
