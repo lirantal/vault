@@ -88,7 +88,7 @@
     "grunt-contrib-uglify": "~5.2.2",
     "grunt-contrib-watch": "~1.1.0",
     "grunt-env": "~1.0.1",
-    "grunt-eslint": "~26.0.0",
+    "grunt-eslint": "~27.0.0",
     "grunt-karma": "~4.0.2",
     "grunt-mocha-istanbul": "~5.0.2",
     "grunt-mocha-test": "~0.13.3",
