@@ -20,7 +20,7 @@
     "postinstall": "bower install --config.interactive=false",
     "lint": "echo \"No lint step configured\"",
     "build": "echo \"No build step configured\"",
-    "lint:markdown": "markdownlint -c .github/.markdownlint.yml '**/**.md'",
+    "lint:markdown": "markdownlint -i '**/node_modules/**' -c .github/.markdownlint.yml '**/**.md'",
     "version": "changeset version",
     "release": "changeset publish"
   },
